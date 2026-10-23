@@ -1,0 +1,69 @@
+{
+  "nodes": {
+    "discordify": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792696355,
+        "narHash": "sha256-iCFPcMAgBEW0QgDbwUSDIZ+9YDiY1cHfNaucE0qH/mc=",
+        "owner": "itashki",
+        "repo": "discordify",
+        "rev": "2fdd36a57b7ebe7a4570970ddc484d0227cdd81b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "itashki",
+        "repo": "discordify",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792668857,
+        "narHash": "sha256-chUrnAqBhBLvXBUsLFxFYBIl8c0GWp06wdjmAMS8l+U=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "cb7de2c7e589afe7531d4832c71ad4df144624ea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1792502884,
+        "narHash": "sha256-IoNisKcGbUjdd45qCqywGMCYmZ5EnkxezvLII0FWwNA=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "02c087f3fe673c9e317f206a627cb6b910336dbe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "discordify": "discordify",
+        "home-manager": "home-manager",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
