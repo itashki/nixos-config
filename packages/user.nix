@@ -72,4 +72,6 @@
   codex
   yt-dlp
   whisper-cpp
+
+  godot
 ]
