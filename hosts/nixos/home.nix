@@ -1,4 +1,3 @@
-# Домашний каталог пользователя; Git identity подключается из agenix.
 { localSettings, ... }:
 {
   home = {

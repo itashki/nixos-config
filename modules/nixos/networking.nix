@@ -3,7 +3,6 @@
   networking = {
     networkmanager.enable = true;
 
-    # Разрешённые входящие порты и диапазоны.
     firewall = {
       allowedTCPPorts = [
         27031

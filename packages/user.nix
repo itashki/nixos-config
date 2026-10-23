@@ -1,6 +1,5 @@
 { pkgs }: with pkgs;
 [
-  # Поиск, диагностика, сетевые утилиты и инструменты виртуальных машин.
   wget
   nil
   sshfs
@@ -8,7 +7,6 @@
   virtiofsd
   python3
 
-  # Среды разработки, компиляторы и форматирование Nix.
   nodejs
   cargo
   rustc
@@ -19,7 +17,6 @@
 
   kdePackages.kate
 
-  # Общение, сетевые приложения и удалённый доступ.
   telegram-desktop
   signal-desktop
   tor-browser
@@ -28,7 +25,6 @@
   docker-compose
   piper
 
-  # Графические редакторы.
   gimp
   krita
 

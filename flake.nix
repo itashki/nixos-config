@@ -22,7 +22,6 @@
       ...
     }:
     let
-      # Настройки машины нужны при вычислении и хранятся в Git.
       localSettings = import ./hosts/nixos/settings.nix;
     in
     {

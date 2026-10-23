@@ -3,6 +3,15 @@
   # Версия совместимости Home Manager, не повышается при обычном обновлении.
   home.stateVersion = "24.11";
 
+  # Готовые пакеты сохраняют патчи Nixpkgs; адаптеры для plugins.src не нужны.
+  home.packages = with pkgs.fishPlugins; [
+    fzf-fish
+    done
+    pure
+    puffer
+    bass
+  ];
+
   programs = {
     # CLI-инструменты: модули позволяют добавлять настройки без дублирования пакетов.
     bat.enable = true;
@@ -14,29 +23,11 @@
 
     fzf = {
       enable = true;
-      # Привязками Fish управляет fzf-fish; не подключаем второй набор.
       enableFishIntegration = false;
     };
 
-    # Системное включение Fish остаётся в modules/nixos/programs.nix.
-    fish = {
-      enable = true;
-      plugins =
-        map
-          (name: {
-            inherit name;
-            src = pkgs.fishPlugins.${name}.src;
-          })
-          [
-            "fzf-fish"
-            "done"
-            "pure"
-            "puffer"
-            "bass"
-          ];
-    };
+    fish.enable = true;
 
-    # Сохраняем выбранную версию JDK; модуль также устанавливает JAVA_HOME.
     java = {
       enable = true;
       package = pkgs.javaPackages.compiler.openjdk25;
@@ -44,7 +35,6 @@
     bun.enable = true;
     distrobox.enable = true;
 
-    # Пользовательские приложения с собственными модулями Home Manager.
     element-desktop.enable = true;
     vesktop.enable = true;
     libreoffice.enable = true;

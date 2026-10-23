@@ -2,7 +2,6 @@
 {
   users.users.${localSettings.username} = {
     isNormalUser = true;
-    # Доступ к управлению сетью, sudo и виртуализации.
     extraGroups = [
       "networkmanager"
       "wheel"

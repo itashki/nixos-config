@@ -43,7 +43,9 @@ sudo nixos-rebuild switch --flake .#nixos
 
 Пользовательские приложения с модулем подключаются через `programs.<имя>.enable`
 в `home.nix`; остальные остаются в `packages/user.nix`. Плагины Fish задаются
-через `programs.fish.plugins`. Стандартная Fish-интеграция fzf отключена в пользу
+через `home.packages` в `home.nix`: штатный vendor-механизм Fish в NixOS
+загружает готовые пакеты с патчами Nixpkgs. Стандартная Fish-интеграция fzf
+отключена в пользу
 `fzf-fish`. Модуль Java сохраняет OpenJDK 25 и задаёт `JAVA_HOME`; модуль Bun
 добавляет интеграцию Git для бинарных lock-файлов. Наличие серверного модуля
 (например, для dnsmasq или qBittorrent) не заменяет установку CLI/GUI-клиента.
