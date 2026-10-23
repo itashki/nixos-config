@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "agenix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792507013,
+        "narHash": "sha256-8tKjSQajD3mUND1GaAuaWTcuyUpgcGsh5V+l4ibzC7U=",
+        "owner": "ryantm",
+        "repo": "agenix",
+        "rev": "5e5b88a0c8e56f291a108c2fe9934054d9745b2e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ryantm",
+        "repo": "agenix",
+        "type": "github"
+      }
+    },
     "discordify": {
       "inputs": {
         "nixpkgs": [
@@ -7,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792696355,
-        "narHash": "sha256-iCFPcMAgBEW0QgDbwUSDIZ+9YDiY1cHfNaucE0qH/mc=",
+        "lastModified": 1792696609,
+        "narHash": "sha256-xRG3StQjF2zpKqTR9fFMkuBeqti862sqTSRin/leEdE=",
         "owner": "itashki",
         "repo": "discordify",
-        "rev": "2fdd36a57b7ebe7a4570970ddc484d0227cdd81b",
+        "rev": "fd13737570534a8052040c279943a0ac451fb77f",
         "type": "github"
       },
       "original": {
@@ -27,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792668857,
-        "narHash": "sha256-chUrnAqBhBLvXBUsLFxFYBIl8c0GWp06wdjmAMS8l+U=",
+        "lastModified": 1792773325,
+        "narHash": "sha256-bvba9Lts8r8d15MdIDMwJGDxLtJiTlasKtAZyhTDzXk=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "cb7de2c7e589afe7531d4832c71ad4df144624ea",
+        "rev": "6d9655f76459099b0db2f57b13563729c7022aa7",
         "type": "github"
       },
       "original": {
@@ -58,6 +78,7 @@
     },
     "root": {
       "inputs": {
+        "agenix": "agenix",
         "discordify": "discordify",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs"

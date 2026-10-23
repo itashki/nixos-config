@@ -1,4 +1,4 @@
-{ localSettings, ... }:
+{ localSettings, agenix, ... }:
 {
   home-manager = {
     extraSpecialArgs = { inherit localSettings; };
@@ -7,7 +7,9 @@
     users.${localSettings.username} = {
       imports = [
         ../home.nix
-        ../secrets/home.nix
+        ../hosts/nixos/home.nix
+        agenix.homeManagerModules.default
+        ../modules/home-secrets.nix
       ];
     };
   };

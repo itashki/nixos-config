@@ -6,6 +6,9 @@
     home-manager.url = "github:nix-community/home-manager";
 
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+
     discordify.url = "github:itashki/discordify";
     discordify.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -15,19 +18,22 @@
       nixpkgs,
       home-manager,
       discordify,
+      agenix,
       ...
     }:
     let
-      # secrets/ отсутствует в Git, но нужен при локальном вычислении flake.
-      localSettings = import ./secrets/default.nix;
+      # Настройки машины нужны при вычислении и хранятся в Git.
+      localSettings = import ./hosts/nixos/settings.nix;
     in
     {
+      packages.x86_64-linux.agenix = agenix.packages.x86_64-linux.default;
+
       nixosConfigurations = {
         ${localSettings.hostName} = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit localSettings; };
+          specialArgs = { inherit localSettings agenix; };
           modules = [
             ./configuration.nix
-            ./secrets/nixos.nix
+            ./hosts/nixos/default.nix
             ./hardware-configuration.nix
             discordify.nixosModules.default
             home-manager.nixosModules.home-manager
