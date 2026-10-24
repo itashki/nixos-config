@@ -58,12 +58,11 @@ Input `relaksacher` подключает системный сервис из `i
 (аналогично для `relaksacher-personality.age`), затем примените конфигурацию
 и перезапустите сервис. Не переопределяйте `FACTS_FILE` и `PERSONALITY_FILE`
 в `relaksacher-environment.age`: пути задаёт NixOS.
-Память и модели речи хранятся в `/var/lib/relaksacher`.
-Правила `systemd.tmpfiles` копируют существующие модели из `~/ai/` в
-`/var/lib/relaksacher/models` при активации/загрузке, только если копия ещё
-не существует. Для замены модели удалите соответствующую копию перед применением
-конфигурации. В environment-секрете пути моделей указывают на этот каталог,
-а `SILERO_PYTHON=python3` использует Python из пакета сервиса.
+Память хранится в `/var/lib/relaksacher`. Пакет сам скачивает Whisper small и
+Silero v5_6_ru/v3_en с проверкой хешей, хранит их в Nix store и задаёт пути.
+Копирование моделей из `~/ai/` больше не требуется. Не задавайте `WHISPER_MODEL`,
+`SILERO_MODEL` и `SILERO_MODEL_EN` в environment-секрете, если используются
+модели пакета. `SILERO_PYTHON=python3` использует Python из пакета сервиса.
 Пути в environment-файле должны указывать на файлы, доступные пользователю
 `relaksacher`; домашний каталог `ktrd` закрыт для этого пользователя.
 
