@@ -1,0 +1,55 @@
+--- /dev/null
++++ b/src/adapters/terminal/frame.ts
+@@ -0,0 +1,12 @@
++/** @file Paint dashboard frames without clearing the screen before drawing. */
++
++/** Skip identical frames and group row replacement into one synchronized terminal update. */
++export function createFrameWriter(write: (data: string) => unknown) {
++  let previous: string | undefined;
++  return (screen: string) => {
++    if (screen === previous) return;
++    const rows = screen.split("\r\n").map((row) => `${row}\x1b[K`);
++    write(`\x1b[?2026h\x1b[H${rows.join("\r\n")}\x1b[J\x1b[?2026l`);
++    previous = screen;
++  };
++}
+--- a/src/adapters/terminal/tui.ts
++++ b/src/adapters/terminal/tui.ts
+@@ -1,5 +1,6 @@
+ /** @file Dependency-free ANSI operator dashboard with independent scrollable panels. */
+ import { dashboardHeader } from "./header.ts";
++import { createFrameWriter } from "./frame.ts";
+ import {
+   createStatistics,
+   type RequestStatistics,
+@@ -315,6 +316,7 @@
+   let closed = false;
+   let dirty = true;
+   let statisticsVersion = "";
++  const writeFrame = createFrameWriter((data) => output.write(data));
+   const wasRaw = input.isRaw ?? false;
+   // A fresh stdin has readableFlowing=null but isPaused()=false. Restoring only
+   // isPaused leaves the read started by resume() alive after the TUI closes.
+@@ -354,7 +356,7 @@
+       if (navigation.positions[id as PanelId] !== "tail")
+         navigation.positions[id as PanelId] = view.start;
+     }
+-    output.write(`\x1b[H\x1b[2J${rendered.screen}`);
++    writeFrame(rendered.screen);
+   };
+   const unsubscribe = assistant.subscribeTerminal((next) => {
+     if ((next.current ?? next.last)?.id !== (state.current ?? state.last)?.id) {
+--- a/src/adapters/terminal/mouse.ts
++++ b/src/adapters/terminal/mouse.ts
+@@ -65,6 +65,11 @@
+           continue;
+         }
+         if (pending.length === 1 || (pending[1] === 91 && pending.length === 2)) break;
++        // Some terminals report focus when the pointer enters/leaves the window.
++        if (pending[1] === 91 && (pending[2] === 73 || pending[2] === 79)) {
++          pending = pending.slice(3);
++          continue;
++        }
+         if (pending[1] === 91 && pending[2] === 77) {
+           if (pending.length < 6) break;
+           emit(pending[3] - 32, pending[4] - 32, pending[5] - 32);

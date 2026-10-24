@@ -31,7 +31,7 @@
 
       nixosConfigurations = {
         ${localSettings.hostName} = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit localSettings agenix; };
+          specialArgs = { inherit localSettings agenix relaksacher; };
           modules = [
             ./configuration.nix
             ./hosts/nixos/default.nix

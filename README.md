@@ -45,7 +45,9 @@ sudo nixos-rebuild switch --flake .#nixos
 
 Input `relaksacher` подключает системный сервис из `itashki/relaksacher`.
 Настройки сервиса находятся в `modules/nixos/services.nix`. Секреты читаются из
-`/etc/relaksacher/environment` (root, права `0600`), вне Git и Nix store.
+`secrets/relaksacher-environment.age`. Системный agenix расшифровывает его
+в `/run/agenix/relaksacher-environment` (root, права `0400`); systemd читает
+его перед запуском сервиса. Открытые секреты не попадают в Git и Nix store.
 Факты и личность зашифрованы в `secrets/relaksacher-facts.age` и
 `secrets/relaksacher-personality.age`. Системный agenix расшифровывает их
 в `/run/agenix/` с правами `0400` для пользователя `relaksacher`.
@@ -55,12 +57,20 @@ Input `relaksacher` подключает системный сервис из `i
 `nix run ..#agenix -- -e relaksacher-facts.age -i ~/.ssh/id_ed25519`
 (аналогично для `relaksacher-personality.age`), затем примените конфигурацию
 и перезапустите сервис. Не переопределяйте `FACTS_FILE` и `PERSONALITY_FILE`
-в `/etc/relaksacher/environment`: пути задаёт NixOS.
+в `relaksacher-environment.age`: пути задаёт NixOS.
 Память и модели речи хранятся в `/var/lib/relaksacher`.
+Правила `systemd.tmpfiles` копируют существующие модели из `~/ai/` в
+`/var/lib/relaksacher/models` при активации/загрузке, только если копия ещё
+не существует. Для замены модели удалите соответствующую копию перед применением
+конфигурации. В environment-секрете пути моделей указывают на этот каталог,
+а `SILERO_PYTHON=python3` использует Python из пакета сервиса.
 Пути в environment-файле должны указывать на файлы, доступные пользователю
 `relaksacher`; домашний каталог `ktrd` закрыт для этого пользователя.
 
-После подготовки environment-файла и данных примените конфигурацию обычной
+Для изменения токенов и настроек используйте из `secrets/` команду
+`nix run ..#agenix -- -e relaksacher-environment.age -i ~/.ssh/id_ed25519`.
+
+После подготовки секретов и данных примените конфигурацию обычной
 командой выше. Проверка и подключение к панели:
 
 ```sh
