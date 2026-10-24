@@ -21,7 +21,7 @@
 | `home.nix` | Пользовательские программы через опции Home Manager, плагины Fish и home.stateVersion |
 | `modules/home-secrets.nix` | Расшифровка Git identity и подключение к Git |
 | `secrets/git-identity.age` | Зашифрованные Git-имя и email |
-| `secrets/secrets.nix`, `secrets/recipients.nix` | Правила agenix и публичные ключи получателей |
+| `secrets/agenix-rules.nix`, `secrets/recipients.nix` | Правила agenix и публичные ключи получателей |
 
 Имена хоста и пользователя, UUID дисков, PCI-адреса и сеть ZeroTier нужны
 при вычислении Nix и доступны в Git. Git identity читается Git из отдельного
@@ -92,6 +92,23 @@ sudo -u relaksacher relaksacher tui
 
 ## Секреты agenix
 
+После применения конфигурации доступны команды из любой папки:
+
+```sh
+edit-secret                 # Выбор секрета из меню
+edit-facts                  # Факты Релаксачера
+edit-personality            # Личность Релаксачера
+edit-git-identity           # Git identity
+edit-secret git-identity    # Выбор по имени, суффикс .age необязателен
+```
+
+До применения можно запустить `bash ~/.nixos-config/scripts/edit-secret.sh`.
+Редактор задаётся через `EDITOR` (по умолчанию Vim), каталог конфига — через
+`NIXOS_CONFIG_DIR` (по умолчанию `~/.nixos-config`), ключ — через
+`AGENIX_IDENTITY` (по умолчанию `~/.ssh/id_ed25519`). Скрипт явно задаёт
+`AGENIX_RULES`, а agenix расшифровывает файл для редактирования и шифрует
+после сохранения. Применение конфигурации и перезапуск служб выполняются отдельно.
+
 Зашифрованные `.age` и публичные правила хранятся в Git. Прочие файлы в
 `secrets/` игнорируются. Приватный SSH-ключ остаётся вне репозитория:
 `~/.ssh/id_ed25519`. Его строковый путь используется при запуске пользовательской
@@ -118,7 +135,7 @@ nix run ..#agenix -- -e git-identity.age -i ~/.ssh/id_ed25519
 и `email`. После изменения снова примените конфигурацию и перезапустите
 пользовательскую службу `agenix.service`.
 
-Для новых секретов добавляйте правила в `secrets/secrets.nix`, создавайте `.age`
+Для новых секретов добавляйте правила в `secrets/agenix-rules.nix`, создавайте `.age`
 через CLI и подключайте путь расшифрованного файла к программе или службе.
 Не используйте `builtins.readFile` для расшифрованных секретов.
 При смене ключей обновите `secrets/recipients.nix` и выполните из `secrets/`

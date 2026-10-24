@@ -1,5 +1,7 @@
 { lib, pkgs, ... }:
 {
+  imports = [ ./modules/secret-tools.nix ];
+
   # Версия совместимости Home Manager, не повышается при обычном обновлении.
   home.stateVersion = "24.11";
 
