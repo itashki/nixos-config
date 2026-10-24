@@ -1,5 +1,0 @@
-# В Git допускаются только зашифрованные секреты и публичные правила.
-/secrets/*
-!/secrets/*.age
-!/secrets/secrets.nix
-!/secrets/recipients.nix
