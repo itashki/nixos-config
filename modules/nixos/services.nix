@@ -1,4 +1,4 @@
-{ config, pkgs, localSettings, relaksacher, ... }:
+{ config, pkgs, localSettings, ... }:
 {
   age.identityPaths = [ "/home/${localSettings.username}/.ssh/id_ed25519" ];
   age.secrets = {
@@ -31,13 +31,6 @@
   services = {
     relaksacher = {
       enable = true;
-      # Read agenix data directly instead of invoking Bun's module resolver.
-      package = relaksacher.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [
-          ../../patches/relaksacher-config-paths.patch
-          ../../patches/relaksacher-tui-render.patch
-        ];
-      });
       environmentFile = config.age.secrets.relaksacher-environment.path;
       operators = [ localSettings.username ];
       environment = {
