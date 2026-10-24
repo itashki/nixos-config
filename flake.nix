@@ -11,6 +11,7 @@
 
     discordify.url = "github:itashki/discordify";
     discordify.inputs.nixpkgs.follows = "nixpkgs";
+    relaksacher.url = "github:itashki/relaksacher";
   };
 
   outputs =
@@ -18,6 +19,7 @@
       nixpkgs,
       home-manager,
       discordify,
+      relaksacher,
       agenix,
       ...
     }:
@@ -35,6 +37,8 @@
             ./hosts/nixos/default.nix
             ./hardware-configuration.nix
             discordify.nixosModules.default
+            relaksacher.nixosModules.default
+            agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             ./modules/home-manager.nix
           ];

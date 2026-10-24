@@ -41,6 +41,37 @@ sudo nixos-rebuild switch --flake .#nixos
 Для обновления зависимостей запускайте `nix flake update` без sudo.
 `system.stateVersion` и `home.stateVersion` не повышайте при обычном обновлении.
 
+## Релаксачер
+
+Input `relaksacher` подключает системный сервис из `itashki/relaksacher`.
+Настройки сервиса находятся в `modules/nixos/services.nix`. Секреты читаются из
+`/etc/relaksacher/environment` (root, права `0600`), вне Git и Nix store.
+Факты и личность зашифрованы в `secrets/relaksacher-facts.age` и
+`secrets/relaksacher-personality.age`. Системный agenix расшифровывает их
+в `/run/agenix/` с правами `0400` для пользователя `relaksacher`.
+Он использует `/home/ktrd/.ssh/id_ed25519`; ключ должен быть доступен при
+активации системы. Открытое содержимое не включается в Nix store.
+Для изменения используйте из `secrets/` команду
+`nix run ..#agenix -- -e relaksacher-facts.age -i ~/.ssh/id_ed25519`
+(аналогично для `relaksacher-personality.age`), затем примените конфигурацию
+и перезапустите сервис. Не переопределяйте `FACTS_FILE` и `PERSONALITY_FILE`
+в `/etc/relaksacher/environment`: пути задаёт NixOS.
+Память и модели речи хранятся в `/var/lib/relaksacher`.
+Пути в environment-файле должны указывать на файлы, доступные пользователю
+`relaksacher`; домашний каталог `ktrd` закрыт для этого пользователя.
+
+После подготовки environment-файла и данных примените конфигурацию обычной
+командой выше. Проверка и подключение к панели:
+
+```sh
+systemctl status relaksacher
+journalctl -u relaksacher -f
+sudo -u relaksacher relaksacher tui
+```
+
+Перед запуском сервиса завершите ранее запущенный экземпляр бота с теми же
+токенами. Закрытие панели клавишей `q` оставляет сервис работающим.
+
 Пользовательские приложения с модулем подключаются через `programs.<имя>.enable`
 в `home.nix`; остальные остаются в `packages/user.nix`. Плагины Fish задаются
 через `home.packages` в `home.nix`: штатный vendor-механизм Fish в NixOS
