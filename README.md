@@ -45,9 +45,20 @@ sudo nixos-rebuild switch --flake .#nixos
 
 В Ly доступны KDE Plasma (по умолчанию) и Niri. После применения конфигурации
 выйдите из текущей сессии и выберите Niri в Ly. Стандартные сочетания Niri:
-`Super+Return` — Alacritty, `Super+D` — Fuzzel, `Super+Escape` — блокировка
+`Super+T` — Alacritty, `Super+D` — Fuzzel, `Super+Alt+L` — блокировка
 через Swaylock, `Super+Shift+E` — выход. Ghostty также остаётся доступен.
 Пользовательские настройки Niri находятся в `~/.config/niri/config.kdl`.
+
+В Niri запускаются помощник разблокировки KWallet, KDE NetworkManager agent
+через `kded6` и агент Polkit. Пароли Wi-Fi используются из того же кошелька,
+что и в Plasma. Для автоматической разблокировки пароль кошелька должен
+совпадать с паролем входа через Ly. GNOME Keyring отключён, портал секретов
+Niri использует KWallet.
+
+Установлены Waybar, brightnessctl и Xwayland Satellite (Niri запускает его
+по требованию). Codex можно открыть через `Super+D` → `Codex` в Ghostty
+или командой `codex` в терминале. Браузеры и порталы выбора файлов/демонстрации
+экрана доступны в обеих сессиях.
 
 Для гибридной графики Home Manager задаёт `KWIN_ALLOW_VULKAN_MGPU_COPIES=1`
 в `~/.config/environment.d/90-kwin-mgpu.conf`. После применения настройки

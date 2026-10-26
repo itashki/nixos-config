@@ -7,6 +7,15 @@
 
   fonts.fontconfig.enable = true;
 
+  xdg.desktopEntries.codex = {
+    name = "Codex";
+    comment = "Open Codex CLI in Ghostty";
+    exec = "${pkgs.ghostty}/bin/ghostty -e ${pkgs.codex}/bin/codex";
+    icon = "utilities-terminal";
+    categories = [ "Development" ];
+    terminal = false;
+  };
+
   # Allow Vulkan copies between GPUs in KWin on hybrid graphics systems.
   xdg.configFile."environment.d/90-kwin-mgpu.conf".text = ''
     KWIN_ALLOW_VULKAN_MGPU_COPIES=1

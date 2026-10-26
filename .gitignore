@@ -1,0 +1,18 @@
+# Nix build output links.
+/result
+/result-*
+
+# Local development environments and credentials.
+/.direnv/
+/.env
+/.env.*
+!/.env.example
+!/.env.sample
+/.aws/
+/.codex/
+
+# Editor temporary files.
+*.swp
+*.swo
+*~
+.DS_Store
