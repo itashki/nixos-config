@@ -41,6 +41,18 @@ sudo nixos-rebuild switch --flake .#nixos
 Для обновления зависимостей запускайте `nix flake update` без sudo.
 `system.stateVersion` и `home.stateVersion` не повышайте при обычном обновлении.
 
+## Графические сессии
+
+В Ly доступны KDE Plasma (по умолчанию) и Niri. После применения конфигурации
+выйдите из текущей сессии и выберите Niri в Ly. Стандартные сочетания Niri:
+`Super+Return` — Alacritty, `Super+D` — Fuzzel, `Super+Escape` — блокировка
+через Swaylock, `Super+Shift+E` — выход. Ghostty также остаётся доступен.
+Пользовательские настройки Niri находятся в `~/.config/niri/config.kdl`.
+
+Для гибридной графики Home Manager задаёт `KWIN_ALLOW_VULKAN_MGPU_COPIES=1`
+в `~/.config/environment.d/90-kwin-mgpu.conf`. После применения настройки
+нужно выйти из Plasma и войти снова.
+
 ## Релаксачер
 
 Input `relaksacher` подключает системный сервис из `itashki/relaksacher`.

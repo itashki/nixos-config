@@ -7,6 +7,11 @@
 
   fonts.fontconfig.enable = true;
 
+  # Allow Vulkan copies between GPUs in KWin on hybrid graphics systems.
+  xdg.configFile."environment.d/90-kwin-mgpu.conf".text = ''
+    KWIN_ALLOW_VULKAN_MGPU_COPIES=1
+  '';
+
   # Avoid the Ghostty 1.3.1 startup race with systemd's reload-handler check.
   xdg.configFile."systemd/user/app-com.mitchellh.ghostty.service.d/startup.conf".text = ''
     [Service]
