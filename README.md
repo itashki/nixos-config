@@ -66,31 +66,43 @@ Niri использует KWallet.
 
 ## Релаксачер
 
-Input `relaksacher` подключает системный сервис из `itashki/relaksacher`.
-Настройки сервиса находятся в `modules/nixos/services.nix`. Секреты читаются из
-`secrets/relaksacher-environment.age`. Системный agenix расшифровывает его
-в `/run/agenix/relaksacher-environment` (root, права `0400`); systemd читает
-его перед запуском сервиса. Открытые секреты не попадают в Git и Nix store.
-Факты и личность зашифрованы в `secrets/relaksacher-facts.age` и
-`secrets/relaksacher-personality.age`. Системный agenix расшифровывает их
-в `/run/agenix/` с правами `0400` для пользователя `relaksacher`.
-Он использует `/home/ktrd/.ssh/id_ed25519`; ключ должен быть доступен при
-активации системы. Открытое содержимое не включается в Nix store.
-Для изменения используйте из `secrets/` команду
-`nix run ..#agenix -- -e relaksacher-facts.age -i ~/.ssh/id_ed25519`
-(аналогично для `relaksacher-personality.age`), затем примените конфигурацию
-и перезапустите сервис. Не переопределяйте `FACTS_FILE` и `PERSONALITY_FILE`
-в `relaksacher-environment.age`: пути задаёт NixOS.
-Память хранится в `/var/lib/relaksacher`. Пакет сам скачивает Whisper small и
-Silero v5_6_ru/v3_en с проверкой хешей, хранит их в Nix store и задаёт пути.
-Копирование моделей из `~/ai/` больше не требуется. Не задавайте `WHISPER_MODEL`,
-`SILERO_MODEL` и `SILERO_MODEL_EN` в environment-секрете, если используются
-модели пакета. `SILERO_PYTHON=python3` использует Python из пакета сервиса.
-Пути в environment-файле должны указывать на файлы, доступные пользователю
-`relaksacher`; домашний каталог `ktrd` закрыт для этого пользователя.
+Input `relaksacher` предоставляет Nix-модуль, зависимости и модели речи.
+Сам бот запускается из локального проекта: код и установленные там
+`node_modules` сервис видит только для чтения через `/run/relaksacher/source`.
+Домашний каталог остаётся закрытым; монтирование существует только внутри сервиса.
+Настройка находится в `modules/nixos/services.nix`.
 
-Для изменения токенов и настроек используйте из `secrets/` команду
-`nix run ..#agenix -- -e relaksacher-environment.age -i ~/.ssh/id_ed25519`.
+Настоящий путь к проекту хранится только в зашифрованном секрете
+`secrets/relaksacher-source-directory.age`. Перед запуском root читает его
+и создаёт ссылку в закрытом каталоге `/run/relaksacher-checkout` (права `0700`).
+В открытом конфиге, unit-файлах и Nix store нет настоящего пути.
+Для изменения расположения отредактируйте этот секрет через `edit-secret
+relaksacher-source-directory` и примените конфигурацию.
+
+systemd перед каждым запуском читает `.env` проекта от root.
+Факты и личность читаются из `facts.json5` и `personality.json5` той же
+рабочей папки. Содержимое этих файлов не включается в Nix store или Git.
+Прежние `secrets/relaksacher-*.age` сохранены, но сервис больше их не использует;
+команды `edit-facts` и `edit-personality` редактируют эти прежние зашифрованные
+копии. Для действующих настроек редактируйте файлы непосредственно в проекте.
+
+После правок кода, токенов, модели, личности или фактов достаточно:
+
+```sh
+sudo systemctl restart relaksacher
+```
+
+Обновлять input и пересобирать NixOS для таких правок не требуется.
+После изменения JS-зависимостей выполните `bun install` в проекте.
+Для изменений Nix-модуля, пакета запуска или системных зависимостей по-прежнему
+нужны обновление input и `nixos-rebuild switch`. Мягкий рестарт из TUI не
+перечитывает окружение systemd и в этом режиме не обновляет граф модулей.
+
+Память и журнал остаются в `/var/lib/relaksacher`.
+Whisper small и Silero v5_6_ru/v3_en предоставляет Nix-пакет, включая Python.
+Сервис исключает `WHISPER_MODEL`, `SILERO_MODEL`, `SILERO_MODEL_EN`
+и `SILERO_PYTHON` из локального `.env`, чтобы домашние пути разработки
+не перекрывали доступные сервису модели и Python из пакета.
 
 После подготовки секретов и данных примените конфигурацию обычной
 командой выше. Проверка и подключение к панели:

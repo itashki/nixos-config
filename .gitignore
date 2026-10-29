@@ -16,3 +16,9 @@
 *.swo
 *~
 .DS_Store
+
+# Only ciphertext and public encryption rules belong in the secrets directory.
+/secrets/*
+!/secrets/*.age
+!/secrets/agenix-rules.nix
+!/secrets/recipients.nix
