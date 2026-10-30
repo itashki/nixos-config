@@ -16,6 +16,7 @@
     relaksacher = {
       enable = true;
       sourceDirectory = "/run/relaksacher-checkout/source";
+      sourceExecutable = "dist/relaksacher";
       environmentFile = "/run/relaksacher-checkout/source/.env";
       operators = [ localSettings.username ];
       environment = {
@@ -47,8 +48,8 @@
           /*) ;;
           *) echo "Invalid checkout location secret" >&2; exit 1 ;;
         esac
-        if [ ! -f "$source/index.ts" ] || [ ! -d "$source/node_modules" ]; then
-          echo "Checkout or installed dependencies unavailable" >&2
+        if [ ! -x "$source/dist/relaksacher" ] || [ ! -r "$source/scripts/silero-tts.py" ]; then
+          echo "Local AOT executable or Silero script unavailable; run the project build" >&2
           exit 1
         fi
         ${pkgs.coreutils}/bin/ln -sfnT -- "$source" "$RUNTIME_DIRECTORY/source"
