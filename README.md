@@ -5,23 +5,23 @@
 
 ## Структура
 
-| Файл | Назначение |
-| --- | --- |
-| `flake.nix`, `flake.lock` | Сборка системы и зафиксированные зависимости |
-| `configuration.nix` | Системные модули, Nix, локаль, безопасность и system.stateVersion |
-| `hosts/nixos/settings.nix` | Имя пользователя и хоста |
-| `hosts/nixos/default.nix` | ZeroTier, Windows, PCI-адреса GPU и описание пользователя |
-| `hosts/nixos/home.nix` | Имя пользователя и домашний каталог Home Manager |
-| `hardware-configuration.nix` | Диски, UUID, модули ядра и аппаратная платформа |
-| `modules/nixos/` | Загрузчик, сеть, рабочий стол, оборудование, службы и программы |
-| `modules/nixos/networking.nix` | NetworkManager и входящие порты firewall |
-| `modules/nixos/users.nix` | Права, группы и shell пользователя |
-| `packages/user.nix` | Пакеты без подходящего модуля NixOS/Home Manager |
-| `modules/home-manager.nix` | Интеграция Home Manager и agenix |
-| `home.nix` | Пользовательские программы через опции Home Manager, плагины Fish и home.stateVersion |
-| `modules/home-secrets.nix` | Расшифровка Git identity и подключение к Git |
-| `secrets/git-identity.age` | Зашифрованные Git-имя и email |
-| `secrets/agenix-rules.nix`, `secrets/recipients.nix` | Правила agenix и публичные ключи получателей |
+| Файл                                                 | Назначение                                                                            |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| `flake.nix`, `flake.lock`                            | Сборка системы и зафиксированные зависимости                                          |
+| `configuration.nix`                                  | Системные модули, Nix, локаль, безопасность и system.stateVersion                     |
+| `hosts/nixos/settings.nix`                           | Имя пользователя и хоста                                                              |
+| `hosts/nixos/default.nix`                            | ZeroTier, Windows, PCI-адреса GPU и описание пользователя                             |
+| `hosts/nixos/home.nix`                               | Имя пользователя и домашний каталог Home Manager                                      |
+| `hardware-configuration.nix`                         | Диски, UUID, модули ядра и аппаратная платформа                                       |
+| `modules/nixos/`                                     | Загрузчик, сеть, рабочий стол, оборудование, службы и программы                       |
+| `modules/nixos/networking.nix`                       | NetworkManager и входящие порты firewall                                              |
+| `modules/nixos/users.nix`                            | Права, группы и shell пользователя                                                    |
+| `packages/user.nix`                                  | Пакеты без подходящего модуля NixOS/Home Manager                                      |
+| `modules/home-manager.nix`                           | Интеграция Home Manager и agenix                                                      |
+| `home.nix`                                           | Пользовательские программы через опции Home Manager, плагины Fish и home.stateVersion |
+| `modules/home-secrets.nix`                           | Расшифровка Git identity и подключение к Git                                          |
+| `secrets/git-identity.age`                           | Зашифрованные Git-имя и email                                                         |
+| `secrets/agenix-rules.nix`, `secrets/recipients.nix` | Правила agenix и публичные ключи получателей                                          |
 
 Имена хоста и пользователя, UUID дисков, PCI-адреса и сеть ZeroTier нужны
 при вычислении Nix и доступны в Git. Git identity читается Git из отдельного
@@ -47,7 +47,27 @@ sudo nixos-rebuild switch --flake .#nixos
 выйдите из текущей сессии и выберите Niri в Ly. Стандартные сочетания Niri:
 `Super+T` — Alacritty, `Super+D` — Fuzzel, `Super+Alt+L` — блокировка
 через Swaylock, `Super+Shift+E` — выход. Ghostty также остаётся доступен.
-Пользовательские настройки Niri находятся в `~/.config/niri/config.kdl`.
+Настройки Niri хранятся в `config/niri/config.kdl`; Home Manager устанавливает
+их в `~/.config/niri/config.kdl`, сохраняя прежний файл как `.before-home-manager`.
+Раскладки: английская, русская и иврит, переключение по кругу — `Caps Lock`. Они заданы
+в `services.xserver.xkb` в `modules/nixos/desktop.nix`; Niri берёт эти
+настройки из системы, пока его блок `input.keyboard.xkb` пуст.
+После применения конфигурации перезайдите в Niri.
+Waybar настроен в `programs.waybar` в `home.nix`: тёмная панель с рабочими
+столами, названием окна, часами, сетью, громкостью, батареей, раскладкой и треем.
+Текстовые обозначения модулей не требуют шрифта со специальными значками.
+Индикатор `BRT` показывает яркость ноутбука; прокрутка на нём меняет яркость
+ноутбука и внешних мониторов через общую команду `brightness-all`.
+Индикатор `BT` показывает состояние Bluetooth и число подключений; при
+наведении видны имена устройств, нажатие открывает настройки Bluetooth KDE.
+Погода показывает температуру в Беэр-Шеве, при наведении — описание,
+ощущаемую температуру, влажность и ветер. Обновляется через wttr.is каждые
+15 минут. Город меняется в переменной `weatherCity` в начале `home.nix`,
+затем нужно применить конфигурацию и перезапустить Waybar.
+Клавиши яркости вызывают `brightness-all up/down`: меняют подсветку ноутбука
+и яркость подключённых внешних мониторов через DDC/CI. В меню внешнего
+монитора должен быть включён DDC/CI. Доступ к I²C задаётся системной
+конфигурацией; после первого применения нужно перезайти в сессию.
 
 В Niri запускаются помощник разблокировки KWallet, KDE NetworkManager agent
 через `kded6` и агент Polkit. Пароли Wi-Fi используются из того же кошелька,

@@ -1,6 +1,7 @@
 { ... }:
 {
   hardware = {
+    i2c.enable = true;
     bluetooth.enable = true;
 
     graphics.enable = true;

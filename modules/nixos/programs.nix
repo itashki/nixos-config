@@ -24,6 +24,7 @@
       enable = true;
       extraConfig = ''
         set -g mouse on
+        set -as terminal-features ',*:hyperlinks'
       '';
     };
   };

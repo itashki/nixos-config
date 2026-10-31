@@ -12,6 +12,7 @@
     swaylock
     waybar
     brightnessctl
+    ddcutil
     xwayland-satellite
   ];
 
@@ -68,6 +69,11 @@
 
     xserver = {
       enable = true;
+      # Niri reads these defaults through org.freedesktop.locale1.
+      xkb = {
+        layout = "us,ru,il";
+        options = "grp:caps_toggle";
+      };
       videoDrivers = [
         "modesetting"
         "nvidia"
