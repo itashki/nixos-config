@@ -123,15 +123,16 @@ sudo systemctl restart relaksacher
 
 Обновлять input и пересобирать NixOS для таких правок не требуется.
 После изменения JS-зависимостей выполните `bun install` и сборку исполняемого файла в проекте.
-Сохраните `scripts/silero-tts.py`: Python запускает его из локального checkout.
+Сохраните `scripts/silero-tts.py` и `scripts/gigaam-server.py`: Python запускает их из локального checkout.
 Для изменений Nix-модуля, пакета запуска или системных зависимостей по-прежнему
 нужны обновление input и `nixos-rebuild switch`. Мягкий рестарт из TUI не
 перечитывает окружение systemd и в этом режиме не обновляет граф модулей.
 
 Память и журнал остаются в `/var/lib/relaksacher`.
-Whisper small и Silero v5_6_ru/v3_en предоставляет Nix-пакет, включая Python.
-Сервис исключает `WHISPER_MODEL`, `SILERO_MODEL`, `SILERO_MODEL_EN`
-и `SILERO_PYTHON` из локального `.env`, чтобы домашние пути разработки
+Nix-пакет предоставляет GigaAM-v3 e2e_rnnt с пунктуацией, CUDA-окружение Python,
+резервный Whisper large-v3 на CPU и Silero v5_6_ru/v3_en.
+Сервис исключает `GIGAAM_PYTHON`, `GIGAAM_MODEL_DIR`, `WHISPER_MODEL`,
+`SILERO_MODEL`, `SILERO_MODEL_EN` и `SILERO_PYTHON` из локального `.env`, чтобы домашние пути разработки
 не перекрывали доступные сервису модели и Python из пакета.
 
 После подготовки секретов и данных примените конфигурацию обычной

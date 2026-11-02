@@ -48,8 +48,8 @@
           /*) ;;
           *) echo "Invalid checkout location secret" >&2; exit 1 ;;
         esac
-        if [ ! -x "$source/dist/relaksacher" ] || [ ! -r "$source/scripts/silero-tts.py" ]; then
-          echo "Local executable or Silero script unavailable; run the project build" >&2
+        if [ ! -x "$source/dist/relaksacher" ] || [ ! -r "$source/scripts/silero-tts.py" ] || [ ! -r "$source/scripts/gigaam-server.py" ]; then
+          echo "Local executable or speech scripts unavailable; run the project build" >&2
           exit 1
         fi
         ${pkgs.coreutils}/bin/ln -sfnT -- "$source" "$RUNTIME_DIRECTORY/source"
@@ -66,6 +66,8 @@
     # Keep Nix-managed speech models/Python instead of development paths in .env.
     serviceConfig.UnsetEnvironment = [
       "WHISPER_MODEL"
+      "GIGAAM_PYTHON"
+      "GIGAAM_MODEL_DIR"
       "SILERO_MODEL"
       "SILERO_MODEL_EN"
       "SILERO_PYTHON"
