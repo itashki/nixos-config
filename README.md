@@ -87,11 +87,14 @@ Niri использует KWallet.
 ## Релаксачер
 
 Input `relaksacher` предоставляет Nix-модуль, зависимости и модели речи.
-Сам бот запускается из локальной AOT-сборки `dist/relaksacher`: проект
+Сам бот запускается из локальной JIT-сборки `dist/relaksacher`: проект
 сервис видит только для чтения через `/run/relaksacher/source`.
 В Nix store локальный бинарник и настройки не копируются.
 Домашний каталог остаётся закрытым; монтирование существует только внутри сервиса.
 Настройка находится в `modules/nixos/services.nix`.
+Бинарник включает Bun и JIT; `MemoryDenyWriteExecute = false` явно разрешает
+генерацию машинного кода во время работы. Системный Bun для запуска не нужен.
+Экспериментальный AOT остаётся доступен через `./build.sh --aot` в проекте.
 
 Настоящий путь к проекту хранится только в зашифрованном секрете
 `secrets/relaksacher-source-directory.age`. Перед запуском root читает его
@@ -111,7 +114,7 @@ systemd перед каждым запуском читает `.env` проек�
 
 ```sh
 # Из рабочего каталога проекта:
-nix shell path:.#bun-canary --command bun run build
+bun run build
 sudo systemctl restart relaksacher
 ```
 
@@ -119,7 +122,7 @@ sudo systemctl restart relaksacher
 `sudo systemctl restart relaksacher`.
 
 Обновлять input и пересобирать NixOS для таких правок не требуется.
-После изменения JS-зависимостей выполните `bun install` и AOT-сборку в проекте.
+После изменения JS-зависимостей выполните `bun install` и сборку исполняемого файла в проекте.
 Сохраните `scripts/silero-tts.py`: Python запускает его из локального checkout.
 Для изменений Nix-модуля, пакета запуска или системных зависимостей по-прежнему
 нужны обновление input и `nixos-rebuild switch`. Мягкий рестарт из TUI не

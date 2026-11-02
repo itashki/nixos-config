@@ -49,7 +49,7 @@
           *) echo "Invalid checkout location secret" >&2; exit 1 ;;
         esac
         if [ ! -x "$source/dist/relaksacher" ] || [ ! -r "$source/scripts/silero-tts.py" ]; then
-          echo "Local AOT executable or Silero script unavailable; run the project build" >&2
+          echo "Local executable or Silero script unavailable; run the project build" >&2
           exit 1
         fi
         ${pkgs.coreutils}/bin/ln -sfnT -- "$source" "$RUNTIME_DIRECTORY/source"
@@ -61,6 +61,8 @@
     requires = [ "relaksacher-source.service" ];
     after = [ "relaksacher-source.service" ];
     partOf = [ "relaksacher-source.service" ];
+    # The standalone binary embeds Bun with JIT; executable memory must remain allowed.
+    serviceConfig.MemoryDenyWriteExecute = false;
     # Keep Nix-managed speech models/Python instead of development paths in .env.
     serviceConfig.UnsetEnvironment = [
       "WHISPER_MODEL"
