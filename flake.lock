@@ -97,11 +97,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1794149742,
-        "narHash": "sha256-ZpeYzSHdBRHz60ZruqsF1tQJHA6HXx1EQ/TN5eNHq2c=",
+        "lastModified": 1794344133,
+        "narHash": "sha256-+r6hjzUn4aMjr1LuJYgS+8orUqjtqqDCydtLrhxsVZ0=",
         "owner": "itashki",
         "repo": "relaksacher",
-        "rev": "c1182fc9ec5ec75e8599b5f4a669fd92f1825849",
+        "rev": "6d3dcf86ed780e5ef2ccaed220fdedd9bd8a3b46",
         "type": "github"
       },
       "original": {
