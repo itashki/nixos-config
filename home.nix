@@ -39,6 +39,20 @@ in
 
   xdg.configFile."niri/config.kdl".source = ./config/niri/config.kdl;
 
+  # Vesktop's own autostart entry embeds store paths that become stale after GC.
+  xdg.configFile."autostart/vesktop.desktop" = {
+    force = true;
+    text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Vesktop
+      Exec=${lib.getExe pkgs.vesktop}
+      Icon=vesktop
+      Terminal=false
+      StartupNotify=false
+    '';
+  };
+
   xdg.desktopEntries.codex = {
     name = "Codex";
     comment = "Open Codex CLI in Ghostty";
@@ -228,6 +242,17 @@ in
 
     fish = {
       enable = true;
+      functions.reboot = {
+        description = "Restart through KDE to save the desktop session";
+        body = ''
+          if test (count $argv) -eq 0; and contains KDE (string split : -- "$XDG_CURRENT_DESKTOP")
+            ${pkgs.dbus}/bin/dbus-send --session --print-reply \
+              --dest=org.kde.Shutdown /Shutdown org.kde.Shutdown.logoutAndReboot
+          else
+            command reboot $argv
+          end
+        '';
+      };
       interactiveShellInit = ''
         set -g fish_greeting
       '';

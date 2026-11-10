@@ -45,9 +45,9 @@
         libxxf86vm
         libelf
 
-        # Required
+        # GLib for downloaded binaries. Add toolkit libraries only as needed.
         glib
-        gtk2
+        # gtk2 # Deprecated; enable only for downloaded binaries that require GTK2.
 
         # Inspired by steam
         # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/st/steam/package.nix#L36-L85

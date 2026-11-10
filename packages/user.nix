@@ -21,7 +21,7 @@
   signal-desktop
   tor-browser
   qbittorrent
-  anydesk
+  # anydesk
   docker-compose
   piper
 

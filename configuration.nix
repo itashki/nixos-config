@@ -13,6 +13,14 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = [
+    (_final: prev: {
+      codex = prev.codex.overrideAttrs {
+        # Codex's recipe expects bundled libraries that the new Rust hook disables.
+        dontCargoUseSystemLibs = true;
+      };
+    })
+  ];
 
   nix.settings.experimental-features = [
     "nix-command"
