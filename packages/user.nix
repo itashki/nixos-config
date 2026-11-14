@@ -37,5 +37,4 @@
   proton-vpn
   p7zip
   whisper-cpp
-  godot
 ]

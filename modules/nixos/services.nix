@@ -11,8 +11,68 @@
     owner = "root";
     mode = "0400";
   };
+  age.secrets.sunshine-frp.file = ../../secrets/sunshine-frp.age;
 
   services = {
+    sunshine = {
+      enable = true;
+      autoStart = true;
+      settings = {
+        capture = "kwin"; # Avoid the XDG portal startup/shutdown hang on Plasma.
+        output_name = "eDP-1";
+        # Encode on the screen's Intel GPU to avoid cross-GPU DMA-BUF import failures.
+        encoder = "vaapi";
+        # shortcut: render node numbering can change, recheck after GPU/driver changes.
+        adapter_name = "/dev/dri/renderD128";
+        origin_web_ui_allowed = "pc";
+        external_ip = "193.181.210.149";
+        # FRP connections arrive via loopback, including Internet clients.
+        lan_encryption_mode = 2;
+        wan_encryption_mode = 2;
+      };
+      applications.apps = [ { name = "Desktop"; } ];
+    };
+    frp.instances.sunshine = {
+      enable = true;
+      role = "client";
+      environmentFiles = [ config.age.secrets.sunshine-frp.path ];
+      settings = {
+        serverAddr = "193.181.210.149";
+        serverPort = 7000;
+        auth.token = "{{ .Envs.FRP_TOKEN }}";
+        transport.tls.enable = true;
+        proxies =
+          map
+            (port: {
+              name = "ktrd-sunshine-tcp-${toString port}";
+              type = "tcp";
+              localIP = "127.0.0.1";
+              localPort = port;
+              remotePort = port;
+            })
+            [
+              47984
+              47989
+              48010
+            ]
+          ++
+            map
+              (port: {
+                name = "ktrd-sunshine-udp-${toString port}";
+                type = "udp";
+                localIP = "127.0.0.1";
+                localPort = port;
+                remotePort = port;
+              })
+              [
+                47998
+                47999
+                48000
+                48002
+                48010
+              ];
+      };
+    };
     relaksacher = {
       enable = true;
       sourceDirectory = "/run/relaksacher-checkout/source";

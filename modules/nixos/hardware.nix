@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   hardware = {
     i2c.enable = true;
@@ -6,6 +6,7 @@
 
     graphics.enable = true;
     graphics.enable32Bit = true;
+    graphics.extraPackages = [ pkgs.intel-media-driver ];
 
     nvidia = {
       open = true;
