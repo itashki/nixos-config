@@ -5,7 +5,6 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "docker"
       "libvirtd"
       "i2c"
     ];

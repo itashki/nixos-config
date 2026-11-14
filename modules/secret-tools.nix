@@ -15,8 +15,6 @@ in
 {
   home.packages = [
     editSecret
-    (shortcut "edit-facts" "relaksacher-facts")
-    (shortcut "edit-personality" "relaksacher-personality")
     (shortcut "edit-git-identity" "git-identity")
   ];
 }

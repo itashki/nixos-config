@@ -4,17 +4,12 @@
     networkmanager.enable = true;
 
     firewall = {
+      # ALVR; Steam Remote Play ports come from programs.steam.remotePlay.
       allowedTCPPorts = [
-        27031
-        27036
         9943
         9944
       ];
       allowedUDPPorts = [
-        27036
-        27037
-        10400
-        10401
         9943
         9944
       ];

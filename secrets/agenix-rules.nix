@@ -5,8 +5,5 @@ in
 {
   "git-identity.age".publicKeys = recipients;
   "sunshine-frp.age".publicKeys = recipients;
-  "relaksacher-environment.age".publicKeys = recipients;
   "relaksacher-source-directory.age".publicKeys = recipients;
-  "relaksacher-facts.age".publicKeys = recipients;
-  "relaksacher-personality.age".publicKeys = recipients;
 }

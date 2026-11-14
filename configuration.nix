@@ -45,11 +45,7 @@
   };
   console.keyMap = "us";
 
-  security = {
-    rtkit.enable = true;
-    polkit.enable = true;
-    allowUserNamespaces = true;
-  };
+  security.rtkit.enable = true;
 
   # Версия совместимости установленной системы, не версия nixpkgs.
   system.stateVersion = "25.05";

@@ -34,9 +34,7 @@
         libxtst
         libxrandr
         libxext
-        libx11
         libxfixes
-        libGL
         libva
         pipewire
         libxcb
@@ -69,8 +67,6 @@
         libxi
         libsm
         libice
-        nspr
-        nss
         cups
         libcap
         SDL2
@@ -132,13 +128,11 @@
         cairo
         atk
         gdk-pixbuf
-        fontconfig
         freetype
         dbus
         alsa-lib
         expat
         # for blender
-        libxkbcommon
 
         libxcrypt-legacy # For natron
         libGLU # For natron
@@ -155,7 +149,6 @@
         libgpg-error
         # https://github.com/xournalpp/xournalpp/releases/download/v1.2.4/xournalpp-1.2.4-x86_64.AppImage
         fribidi
-        librsvg
         # https://github.com/nix-community/nix-ld/issues/95#issuecomment-3041993870
         # (runCommand "librsvg" { } ''
         #   mkdir -p $out/lib/gdk-pixbuf-2.0/2.10.0/loaders

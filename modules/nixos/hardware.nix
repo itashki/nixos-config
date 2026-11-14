@@ -20,7 +20,9 @@
       nvidiaSettings = true;
 
       powerManagement.enable = true;
-      nvidiaPersistenced = true;
+      # Power the dGPU off when idle in offload mode; long-running CUDA apps
+      # (ComfyUI, Ollama) keep it initialized themselves, so no persistenced.
+      powerManagement.finegrained = true;
     };
   };
 }
