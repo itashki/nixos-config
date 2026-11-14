@@ -99,6 +99,19 @@
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
+      extraConfig.pipewire-pulse."90-block-mic-volume" = {
+        "pulse.rules" = [
+          {
+            # Only desktop controls and mixer tools may adjust microphone volume.
+            matches = [
+              {
+                "application.process.binary" = "!~^(plasmashell|systemsettings|kded6|pavucontrol|pactl|pamixer)$";
+              }
+            ];
+            actions.quirks = [ "block-source-volume" ];
+          }
+        ];
+      };
     };
 
     flatpak.enable = true;
