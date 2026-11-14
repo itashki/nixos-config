@@ -10,6 +10,7 @@
     ./modules/nixos/users.nix
     ./modules/nixos/programs.nix
     ./modules/nixos/nix-ld.nix
+    ./modules/nixos/wireguard.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

@@ -43,42 +43,6 @@ sudo nixos-rebuild switch --flake .#nixos
 
 ## Графические сессии
 
-### Доступ с телефона через Moonlight
-
-Sunshine запускается на ПК в графической сессии, Moonlight устанавливается
-на телефон (Android или iOS): https://moonlight-stream.org/ .
-FRP пересылает поток через `193.181.210.149`, используя существующий сервер
-на TCP 7000. Токен клиента хранится в `secrets/sunshine-frp.age` (agenix).
-На сервере разрешены TCP 47984, 47989, 48010 и UDP 47998–48000, 48002, 48010;
-панель управления TCP 47990 не публикуется. Шифрование потока обязательно,
-включая соединения через loopback от FRP. Порты домашнего роутера открывать не нужно.
-
-1. Выполните `sudo nixos-rebuild switch --flake .#nixos` и выйдите/войдите
-   в графическую сессию, чтобы применились права устройств ввода.
-2. На ПК откройте `https://localhost:47990`, подтвердите исключение для
-   локального самоподписанного сертификата и создайте логин/пароль Sunshine.
-3. В Moonlight на телефоне добавьте ПК вручную по адресу `193.181.210.149`.
-   Нажмите на ПК: приложение покажет PIN.
-4. На ПК в панели Sunshine откройте PIN и введите код с телефона.
-5. На телефоне выберите **Desktop**. Начните с 720p, 60 FPS и 5–10 Мбит/с;
-   проверьте подключение через мобильную сеть.
-
-ПК должен быть включён, с активной графической сессией и доступным экраном.
-Это доступ к текущему рабочему столу, а не отдельная сессия входа.
-Настройки Sunshine и список приложений управляются Nix; учётные данные и
-сопряжённые устройства сохраняются в пользовательском каталоге Sunshine.
-Если поток не запускается:
-
-```sh
-systemctl --user status sunshine
-journalctl --user -u sunshine -b
-systemctl status frp-sunshine
-journalctl -u frp-sunshine -b
-```
-
-Документация: [Moonlight](https://github.com/moonlight-stream/moonlight-docs/wiki/Setup-Guide),
-[Sunshine](https://docs.lizardbyte.dev/projects/sunshine/latest/md_docs_2configuration.html).
-
 Вход через Ly в KDE Plasma. Раскладки: английская, русская и иврит,
 переключение по кругу — `Caps Lock`; заданы в `services.xserver.xkb`
 в `modules/nixos/desktop.nix`. KWallet разблокируется паролем входа через Ly,
@@ -87,6 +51,21 @@ journalctl -u frp-sunshine -b
 Для гибридной графики Home Manager задаёт `KWIN_ALLOW_VULKAN_MGPU_COPIES=1`
 в `~/.config/environment.d/90-kwin-mgpu.conf`. После применения настройки
 нужно выйти из Plasma и войти снова.
+
+## WireGuard
+
+Телефон подключается к ПК через WireGuard-туннель на VPS `193.181.210.149`
+(UDP 51820): VPS — `10.8.0.1`, ПК — `10.8.0.2`, телефон — `10.8.0.3`.
+Порты домашнего роутера открывать не нужно: ПК сам держит соединение с VPS.
+Настройка ПК — `modules/nixos/wireguard.nix`, приватный ключ —
+`secrets/wireguard-pc.age`; конфигурация VPS — `/etc/wireguard/wg0.conf`.
+Через туннель открыт только SSH для телефона:
+
+```sh
+ssh -p 22222 ktrd@10.8.0.2
+```
+
+Проверка: `sudo wg show` на ПК или VPS (время последнего handshake).
 
 ## Релаксачер
 
