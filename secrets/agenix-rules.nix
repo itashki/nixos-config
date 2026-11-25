@@ -4,6 +4,5 @@ let
 in
 {
   "git-identity.age".publicKeys = recipients;
-  "wireguard-pc.age".publicKeys = recipients;
   "relaksacher-source-directory.age".publicKeys = recipients;
 }

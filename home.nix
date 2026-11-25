@@ -21,14 +21,14 @@
     '';
   };
 
-  xdg.desktopEntries.codex = {
-    name = "Codex";
-    comment = "Open Codex CLI in Ghostty";
-    exec = "${pkgs.ghostty}/bin/ghostty -e ${pkgs.codex}/bin/codex";
-    icon = "utilities-terminal";
-    categories = [ "Development" ];
-    terminal = false;
-  };
+  # xdg.desktopEntries.codex = {
+  #   name = "Codex";
+  #   comment = "Open Codex CLI in Ghostty";
+  #   exec = "${pkgs.ghostty}/bin/ghostty -e ${pkgs.codex}/bin/codex";
+  #   icon = "utilities-terminal";
+  #   categories = [ "Development" ];
+  #   terminal = false;
+  # };
 
   # Allow Vulkan copies between GPUs in KWin on hybrid graphics systems.
   xdg.configFile."environment.d/90-kwin-mgpu.conf".text = ''
@@ -65,7 +65,7 @@
     ripgrep.enable = true;
     htop.enable = true;
     yt-dlp.enable = true;
-    codex.enable = true;
+    # codex.enable = true;
     claude-code.enable = true;
     ghostty = {
       enable = true;

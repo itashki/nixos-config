@@ -25,13 +25,20 @@
     }:
     let
       localSettings = import ./hosts/nixos/settings.nix;
+      llamaCppPrism = import ./packages/llama-cpp-prism.nix {
+        pkgs = import nixpkgs {
+          system = "x86_64-linux";
+          config.allowUnfree = true;
+        };
+      };
     in
     {
       packages.x86_64-linux.agenix = agenix.packages.x86_64-linux.default;
+      packages.x86_64-linux.llama-cpp-prism = llamaCppPrism;
 
       nixosConfigurations = {
         ${localSettings.hostName} = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit localSettings agenix; };
+          specialArgs = { inherit localSettings agenix llamaCppPrism; };
           modules = [
             ./configuration.nix
             ./hosts/nixos/default.nix

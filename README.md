@@ -52,21 +52,6 @@ sudo nixos-rebuild switch --flake .#nixos
 в `~/.config/environment.d/90-kwin-mgpu.conf`. После применения настройки
 нужно выйти из Plasma и войти снова.
 
-## WireGuard
-
-Телефон подключается к ПК через WireGuard-туннель на VPS `193.181.210.149`
-(UDP 51820): VPS — `10.8.0.1`, ПК — `10.8.0.2`, телефон — `10.8.0.3`.
-Порты домашнего роутера открывать не нужно: ПК сам держит соединение с VPS.
-Настройка ПК — `modules/nixos/wireguard.nix`, приватный ключ —
-`secrets/wireguard-pc.age`; конфигурация VPS — `/etc/wireguard/wg0.conf`.
-Через туннель открыт только SSH для телефона:
-
-```sh
-ssh -p 22222 ktrd@10.8.0.2
-```
-
-Проверка: `sudo wg show` на ПК или VPS (время последнего handshake).
-
 ## Релаксачер
 
 Input `relaksacher` предоставляет Nix-модуль, зависимости и модели речи.

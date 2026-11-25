@@ -2,6 +2,7 @@
   config,
   pkgs,
   localSettings,
+  llamaCppPrism,
   ...
 }:
 {
@@ -11,6 +12,9 @@
     owner = "root";
     mode = "0400";
   };
+
+  environment.systemPackages = [ llamaCppPrism ];
+  systemd.tmpfiles.rules = [ "d /var/lib/llama-models 0755 ${localSettings.username} users -" ];
 
   services = {
     relaksacher = {
@@ -22,11 +26,10 @@
       environment = {
         FACTS_FILE = "/run/relaksacher/source/facts.json5";
         PERSONALITY_FILE = "/run/relaksacher/source/personality.json5";
+        LLAMA_MODEL = "/var/lib/llama-models/Ternary-Bonsai-2.5-27B-Uncensored-PTQ1_0.gguf";
+        LLAMA_MMPROJ = "/var/lib/llama-models/Ternary-Bonsai-2.5-27B-mmproj-Q8_0.gguf";
+        OLLAMA_NUM_CTX = "8192";
       };
-    };
-    ollama = {
-      enable = true;
-      package = pkgs.ollama-cuda;
     };
   };
 
@@ -58,6 +61,10 @@
   };
 
   systemd.services.relaksacher = {
+    path = [
+      llamaCppPrism
+      pkgs.ffmpeg
+    ];
     requires = [ "relaksacher-source.service" ];
     after = [ "relaksacher-source.service" ];
     partOf = [ "relaksacher-source.service" ];
