@@ -5,7 +5,8 @@
 
     steam = {
       enable = true;
-      remotePlay.openFirewall = true;
+      # Remote Play ports are opened on LAN interfaces only (networking.nix).
+      remotePlay.openFirewall = false;
       protontricks.enable = true;
     };
 
